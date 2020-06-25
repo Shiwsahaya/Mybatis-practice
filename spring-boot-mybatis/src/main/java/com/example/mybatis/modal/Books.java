@@ -1,8 +1,9 @@
 package com.example.mybatis.modal;
 
-public class Book {
+public class Books {
     private String name;
     private int price;
+    private int id;
 
     public String getName() {
         return name;
@@ -20,4 +21,11 @@ public class Book {
         this.price = price;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
