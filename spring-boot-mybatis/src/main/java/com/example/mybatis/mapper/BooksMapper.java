@@ -18,9 +18,9 @@ public interface BooksMapper {
         before = false, resultType = Integer.class)
     void insert(Books books);
 
-    @Update("update Books.Books set price=#{price} where name=#{name}")
+    @Update("update Books.Books set price=#{price}, name=#{name} where id=#{id}")
     void update(Books books);
 
-    @Delete("delete from Books.Books where name=#{name}")
+    @Delete("delete from Books.Books where id=#{id}")
     void delete(Books books);
 }

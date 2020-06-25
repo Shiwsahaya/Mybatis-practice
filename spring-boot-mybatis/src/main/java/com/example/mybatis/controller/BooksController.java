@@ -2,9 +2,7 @@ package com.example.mybatis.controller;
 
 import com.example.mybatis.mapper.BooksMapper;
 import com.example.mybatis.modal.Books;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,11 +10,12 @@ import java.util.List;
 @RequestMapping("/api/books")
 public class BooksController {
 
-
     private BooksMapper booksMapper;
+    private Books books;
 
-    public BooksController(BooksMapper booksMapper) {
+    public BooksController(BooksMapper booksMapper, Books books) {
         this.booksMapper = booksMapper;
+        this.books = books;
     }
 
     @GetMapping("/all")
@@ -24,33 +23,36 @@ public class BooksController {
         return booksMapper.findAll();
     }
 
-    @GetMapping("/insert")
-    private List<Books> add() {
-        Books books = new Books();
-        books.setName("DS");
-        books.setPrice(1200);
+    @PostMapping("/add")
+    private String saveData(@RequestBody Books books) {
         booksMapper.insert(books);
-
-        return booksMapper.findAll();
+        return "inserted successful";
     }
 
-        @GetMapping("/update")
-        private List<Books> update() {
-        Books books = new Books();
-        books.setName("DS");
-        books.setPrice(500);
+        @PutMapping("/update")
+        private String update(@RequestParam int id, @RequestParam(value = "price", defaultValue = "0") int price,
+                              @RequestParam(value = "name", defaultValue = "name") String name) {
+            System.out.println(name);
+
+        books.setId(id);
+
+        if(price!= 0)
+            books.setPrice(price);
+
+        if(!name.equals("name"))
+            books.setName(name);
 
         booksMapper.update(books);
-        return booksMapper.findAll();
+
+        return "updated successful";
         }
 
-        @GetMapping("/delete")
-        private List<Books> delete() {
-        Books books = new Books();
-        books.setName("DS");
 
+        @DeleteMapping("/delete")
+        private String delete(@RequestParam int  id) {
+        books.setId(id);
         booksMapper.delete(books);
-        return booksMapper.findAll();
+        return "deleted successful";
         }
 
 }
