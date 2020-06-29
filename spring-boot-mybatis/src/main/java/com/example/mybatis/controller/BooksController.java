@@ -2,6 +2,7 @@ package com.example.mybatis.controller;
 
 import com.example.mybatis.mapper.BooksMapper;
 import com.example.mybatis.modal.Books;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,13 +11,8 @@ import java.util.List;
 @RequestMapping("/api/books")
 public class BooksController {
 
+    @Autowired
     private BooksMapper booksMapper;
-    private Books books;
-
-    public BooksController(BooksMapper booksMapper, Books books) {
-        this.booksMapper = booksMapper;
-        this.books = books;
-    }
 
     @GetMapping("/all")
     public List<Books> getAll() {
@@ -29,29 +25,20 @@ public class BooksController {
         return "inserted successful";
     }
 
-        @PutMapping("/update")
-        private String update(@RequestParam int id, @RequestParam(value = "price", defaultValue = "0") int price,
-                              @RequestParam(value = "name", defaultValue = "name") String name) {
-            System.out.println(name);
+    @PutMapping("/update")
+    private String update(@RequestParam int id, @RequestBody Books books) {
 
         books.setId(id);
-
-        if(price!= 0)
-            books.setPrice(price);
-
-        if(!name.equals("name"))
-            books.setName(name);
-
         booksMapper.update(books);
 
         return "updated successful";
-        }
+    }
 
+        @DeleteMapping("/delete/{id}")
+        private String delete(@PathVariable int  id) {
 
-        @DeleteMapping("/delete")
-        private String delete(@RequestParam int  id) {
-        books.setId(id);
-        booksMapper.delete(books);
+        booksMapper.delete(id);
+
         return "deleted successful";
         }
 

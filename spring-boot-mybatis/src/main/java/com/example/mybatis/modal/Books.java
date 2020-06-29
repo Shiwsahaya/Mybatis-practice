@@ -1,8 +1,5 @@
 package com.example.mybatis.modal;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public class Books {
     private String name;
     private int price;
